@@ -471,12 +471,20 @@
 
 			while (cells[currentstate] != 'goal' && cells[currentstate] != 'pit') {
 				episodelength = episodelength + 1;
+				if (policy == 'random-q') {
+					if (Math.random < 0.7) {
+						policy = 'random';
+					}
+					else {
+						policy = 'q-based';
+					}
+				}
 				if (policy == 'random') {
 					nextstateindex = Math.floor(Math.random() * stateInfo[currentstate][0][0].length);
 					nextstate = stateInfo[currentstate][0][0][nextstateindex];
 					actiontaken = stateInfo[currentstate][0][1][nextstateindex];
 				}
-				if (policy == 'q-based') {
+				else if (policy == 'q-based') {
 					actiontaken = argmaxQ(currentstate);
 					nextstate = stateInfo[currentstate][0][0][stateInfo[currentstate][0][1].indexOf(actiontaken)];
 				}
@@ -922,7 +930,7 @@
 				DisplayControls();
 				for (epi=0; epi < episodes; epi++) {
 					episodenumber = episodenumber + 1;
-					Episode(epi,'random')
+					Episode(epi,'random-q')
 				}
 			}
 
@@ -991,7 +999,7 @@
 		function trainbuttonResponse() {
 			for (epi=0; epi < episodes; epi++) {
 				episodenumber = episodenumber + 1;
-				Episode(epi,'random')
+				Episode(epi,'random-q')
 			}
 			DrawCells();
 			DisplayTexts();
